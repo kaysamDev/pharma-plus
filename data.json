@@ -1,0 +1,86 @@
+{
+    "type": "FeatureCollection",
+    "features": [
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [-0.210239, 5.558484]
+        },
+        "properties": {
+          "name": "Royal Dach Pharmaceuticals",
+          "address": "Castle Rd, Accra",
+          "email": "royal.dach@yahoo.com",
+          "website": "https://royaldachpharmacy.com/",
+          "Tel": "0302248930",
+          "city": "Accra",
+          "country": "Ghana"
+        }
+      },
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [-0.2114550020944447, 5.555462207916911]
+        },
+        "properties": {
+          "name": "FrontLine Pharmacy",
+          "address": "HQ4Q+3CV, farisco traffic light, South liberia road, Accra",
+          "email": "frontlinepharmacy@yahoo.com",
+          "website": "",
+          "Tel": "0302252722",
+          "city": "Accra",
+          "country": "Ghana"
+        }
+      },
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [-0.21491569197389226, 5.56584078557109] 
+        },
+        "properties": {
+          "name": "EPECPLTD Pharmacy",
+          "address": "No. 1 Omega Dr, Accra",
+          "email": "",
+          "website": "ecpl.com.gh",
+          "Tel": "0202693895",
+          "city": "Accra",
+          "country": "Ghana"
+        }
+      },
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [-0.206348, 5.552492]
+        },
+        "properties": {
+          "name": "Dunia Pharmacy",
+          "address": "Tudu",
+          "email": "",
+          "website": "",
+          "Tel": "0244622819",
+          "city": "Accra",
+          "country": "Ghana"
+        }
+      },
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [-0.213674, 5.561904]
+        },
+        "properties": {
+          "name": "Kelmed Pharmaceuticals Ltd.",
+          "address": "C196/2, Adabraka, Greater Accra, Kwame Nkrumah Ave, Accra",
+          "email": "kelmedpharma@gmail.com",
+          "website": "",
+          "Tel": "0596914166",
+          "city": "Accra",
+          "country": "Ghana"
+        }
+      }
+    ]
+  }
+  
