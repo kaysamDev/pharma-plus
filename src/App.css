@@ -47,6 +47,6 @@ option{
 .hosp-info{
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 1rem;
     color: #242424;
 }

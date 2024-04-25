@@ -8,6 +8,7 @@
           "coordinates": [-0.210239, 5.558484]
         },
         "properties": {
+          "id": "067362",
           "name": "Royal Dach Pharmaceuticals",
           "address": "Castle Rd, Accra",
           "email": "royal.dach@yahoo.com",
@@ -24,6 +25,7 @@
           "coordinates": [-0.2114550020944447, 5.555462207916911]
         },
         "properties": {
+          "id": "09336",
           "name": "FrontLine Pharmacy",
           "address": "HQ4Q+3CV, farisco traffic light, South liberia road, Accra",
           "email": "frontlinepharmacy@yahoo.com",
@@ -40,6 +42,7 @@
           "coordinates": [-0.21491569197389226, 5.56584078557109] 
         },
         "properties": {
+          "id": "06100",
           "name": "EPECPLTD Pharmacy",
           "address": "No. 1 Omega Dr, Accra",
           "email": "",
@@ -56,6 +59,7 @@
           "coordinates": [-0.206348, 5.552492]
         },
         "properties": {
+          "id": "05202",
           "name": "Dunia Pharmacy",
           "address": "Tudu",
           "email": "",
@@ -72,6 +76,7 @@
           "coordinates": [-0.213674, 5.561904]
         },
         "properties": {
+          "id": "06002",
           "name": "Kelmed Pharmaceuticals Ltd.",
           "address": "C196/2, Adabraka, Greater Accra, Kwame Nkrumah Ave, Accra",
           "email": "kelmedpharma@gmail.com",

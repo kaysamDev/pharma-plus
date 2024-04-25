@@ -9,7 +9,8 @@ import { ChevronDownCircle, HospitalIcon, LinkIcon, MailIcon, MapPinIcon, PhoneI
 
 function App() {
   const mapRef = useRef<HTMLDivElement>(null);
-  const [pharma, setPharma] = useState("SELECT PHARMACY");
+  const [pharma, setPharma] = useState<string>("SELECT PHARMACY");
+  const [selectedPharmacy,  setSelectedPharmacy] = useState<any>(null)
 
   const data = geoData.features.map((item) => item.properties);
 
@@ -45,6 +46,14 @@ function App() {
 
           // Setting up Map;
           const map = new Map(mapRef.current as HTMLDivElement, mapOptions);
+
+          // Add click event listener to markers
+          map.data.addListener('click', (event: any) => {
+            const clickedPharmacyName = event.feature.getProperty("name");
+            const clickedPharmacy:any = data.find((pharmacy: any) => pharmacy.name === clickedPharmacyName);
+            setSelectedPharmacy(clickedPharmacy);
+            setPharma(clickedPharmacyName);
+          });
 
           // The marker, positioned at Current Location
           new Marker({
@@ -91,11 +100,15 @@ function App() {
             <form action="" method="get">
               <select
                 value={pharma}
-                onChange={(e) => setPharma(e.target.value)}
+                onChange={(e) => {
+                  const selectedPharmacy = data.find((pharmacy) => pharmacy.name === e.target.value);
+                  setPharma(e.target.value);
+                  setSelectedPharmacy(selectedPharmacy);
+                }}
               >
                 <option value="">SELECT PHARMACY</option>
                 {data.map((i) => (
-                  <option value={i.name} key={i.email}>
+                  <option value={i.name} key={i.id}>
                     {i.name.toUpperCase()}
                   </option>
                 ))}
@@ -106,43 +119,54 @@ function App() {
         {/* Profile and select box for hospital */}
 
         {/* Selected Pharmacy information*/}
-        {pharma &&
-          data.map((item) => {
-            if (item.name == pharma) {
-              return (
-                <div className="hosp-container">
-                  <div className="hosp-info">
-                    <div>
-                      <HospitalIcon color="#c94277"/>
-                    </div>
-                    <div>
-                      <p>{item.name}</p>
-                    </div>
-                  </div>
+        {selectedPharmacy && selectedPharmacy.name === pharma && (
+          <div className="hosp-container">
+            <div className="hosp-info">
+              <div>
+                <HospitalIcon color="#c94277" />
+              </div>
+              <div>
+                <p>{selectedPharmacy.name}</p>
+              </div>
+            </div>
 
-                  <div className="hosp-info">
-                    <MapPinIcon color="#c94277"/>
-                    <p>{item.address}</p>
-                  </div>
+            <div className="hosp-info">
+              <div>
+                <MapPinIcon color="#c94277" />
+              </div>
+              <div>
+                <p>{selectedPharmacy.address}</p>
+              </div>
+            </div>
 
-                  <div className="hosp-info">
-                    <MailIcon color="#c94277"/>
-                    <p>{item.email}</p>
-                  </div>
+            <div className="hosp-info">
+              <div>
+                <MailIcon color="#c94277" />
+              </div>
+              <div>
+                <p>{selectedPharmacy.email? selectedPharmacy.email : 'N/A'}</p>
+              </div>
+            </div>
 
-                  <div className="hosp-info">
-                    <LinkIcon color="#c94277"/>
-                    <p>{item.website}</p>
-                  </div>
+            <div className="hosp-info">
+              <div>
+                <LinkIcon color="#c94277" />
+              </div>
+              <div>
+                <p>{selectedPharmacy.website? selectedPharmacy.website : 'N/A'}</p>
+              </div>
+            </div>
 
-                  <div className="hosp-info">
-                    <PhoneIcon color="#c94277"/>
-                    <p>{item.Tel}</p>
-                  </div>
-                </div>
-              );
-            }
-          })}
+            <div className="hosp-info">
+              <div>
+                <PhoneIcon color="#c94277" />
+              </div>
+              <div>
+                <p>{selectedPharmacy.Tel}</p>
+              </div>
+            </div>
+          </div>
+        )}
         {/* Selected Pharmacy information*/}
       </div>
     </>
