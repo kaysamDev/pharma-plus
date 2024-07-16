@@ -9,6 +9,7 @@ import {
   LinkIcon,
   MailIcon,
   MapPinIcon,
+  MapPinnedIcon,
   PhoneIcon,
 } from "lucide-react";
 import { selectedPharmacy } from ".././index";
@@ -167,7 +168,7 @@ function App() {
           </div>
         </div>
 
-        {selectedPharmacy && selectedPharmacy.name === pharma && (
+        {selectedPharmacy && selectedPharmacy.name === pharma ? (
           <div className="hosp-container">
             <div className="hosp-info">
               <div>
@@ -215,6 +216,10 @@ function App() {
                 <p>{selectedPharmacy.Tel}</p>
               </div>
             </div>
+          </div>
+        ) : (
+          <div className="map-pinned">
+            <MapPinnedIcon color="#c94277" size={100}/>
           </div>
         )}
       </div>

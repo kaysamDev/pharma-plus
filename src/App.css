@@ -9,7 +9,7 @@
     padding: 16px;
 }
 
-.prf{
+.prf {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -28,19 +28,21 @@
     height: 2rem;
     border-radius: 100%;
 }
+
 select {
     width: 100%;
     max-height: 2rem;
     height: 100%;
     padding: 4px;
 }
-option{
+
+option {
     background-color: #F3EFF5;
     color: #242424;
 }
 
 /* Hospital information */
-.hosp-container{
+.hosp-container {
     display: flex;
     flex-direction: column;
     gap: 16px;
@@ -49,15 +51,22 @@ option{
     margin-top: 4rem;
     padding: 8px;
 }
-.hosp-info{
+
+.hosp-info {
     display: flex;
     align-items: center;
     gap: 1rem;
     color: #242424;
 }
 
+.map-pinned {
+    display: grid;
+    place-items: center;
+    margin-top: 10rem;
+}
 
-@media screen and (max-width: 55rem){
+
+@media screen and (max-width: 55rem) {
     .card {
         width: 95%;
         max-height: 50px;
@@ -66,5 +75,9 @@ option{
     .hosp-container {
         background-color: #F3EFF5;
         padding: 1rem;
+    }
+
+    .map-pinned {
+        display: none;
     }
 }
