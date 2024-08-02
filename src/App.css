@@ -2,11 +2,12 @@
     position: absolute;
     left: 16px;
     bottom: 16px;
-    top: 16px;
+    top: 4rem;
     width: 300px;
     background-color: #F3EFF5;
     box-shadow: 5px 10px 20px rgba(82, 79, 79, 0.5);
     padding: 16px;
+    overflow: auto;
 }
 
 .prf {
@@ -57,6 +58,21 @@ option {
     align-items: center;
     gap: 1rem;
     color: #242424;
+
+    div {
+        p {
+            word-break: break-all;
+        }
+    }
+
+    ul li {
+        list-style: inside circle;
+        padding: 6px;
+    }
+    
+    ul li:nth-child(even) {
+        background-color: #ebe9e9;
+    }
 }
 
 .map-pinned {
@@ -69,7 +85,7 @@ option {
 @media screen and (max-width: 55rem) {
     .card {
         width: 95%;
-        max-height: 50px;
+        min-height: 50px;
     }
 
     .hosp-container {

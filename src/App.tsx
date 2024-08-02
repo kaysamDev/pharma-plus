@@ -1,54 +1,49 @@
 import "./App.css";
 import { Loader } from "@googlemaps/js-api-loader";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import geoData from "../data.json";
 import Pharmacy from "../src/pharmacy_plus.png";
-import {
-  ChevronDownCircle,
-  HospitalIcon,
-  LinkIcon,
-  MailIcon,
-  MapPinIcon,
-  MapPinnedIcon,
-  PhoneIcon,
-} from "lucide-react";
+import { ChevronDownCircle, MapPinnedIcon } from "lucide-react";
 import { selectedPharmacy } from ".././index";
+import PharmacyDetail from "./components/PharmacyDetail";
+import Services from "./components/Services";
+
+interface GeoDataFeature {
+  properties: selectedPharmacy;
+}
 
 function App() {
   const mapRef = useRef<HTMLDivElement>(null);
   const [pharma, setPharma] = useState<string>("SELECT PHARMACY");
-  const [selectedPharmacy, setSelectedPharmacy] =
-    useState<selectedPharmacy | null>(null);
-  const [directionsRenderer, setDirectionsRenderer] =
-    useState<google.maps.DirectionsRenderer | null>(null);
-  const [currentPosition, setCurrentPosition] =
-    useState<google.maps.LatLngLiteral | null>(null);
+  const [selectedPharmacy, setSelectedPharmacy] = useState<selectedPharmacy | null>(null);
+  const [directionsRenderer, setDirectionsRenderer] = useState<google.maps.DirectionsRenderer | null>(null);
+  const [currentPosition, setCurrentPosition] = useState<google.maps.LatLngLiteral | null>(null);
 
-  const data = geoData.features.map((item) => item.properties);
+  const data = geoData.features.map((item: GeoDataFeature) => item.properties);
 
   const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY as string;
 
-  const calculateAndDisplayRoute = (
-    origin: google.maps.LatLngLiteral,
-    destination: google.maps.LatLngLiteral
-  ) => {
-    if (directionsRenderer) {
-      const directionsService = new google.maps.DirectionsService();
-      const request = {
-        origin: origin,
-        destination: destination,
-        travelMode: google.maps.TravelMode.DRIVING,
-      };
+  const calculateAndDisplayRoute = useCallback(
+    (origin: google.maps.LatLngLiteral, destination: google.maps.LatLngLiteral) => {
+      if (directionsRenderer) {
+        const directionsService = new google.maps.DirectionsService();
+        const request: google.maps.DirectionsRequest = {
+          origin: origin,
+          destination: destination,
+          travelMode: google.maps.TravelMode.DRIVING,
+        };
 
-      directionsService.route(request, (result, status) => {
-        if (status === google.maps.DirectionsStatus.OK) {
-          directionsRenderer.setDirections(result);
-        } else {
-          console.error("Directions request failed due to " + status);
-        }
-      });
-    }
-  };
+        directionsService.route(request, (result, status) => {
+          if (status === google.maps.DirectionsStatus.OK && result) {
+            directionsRenderer.setDirections(result);
+          } else {
+            console.error("Directions request failed due to " + status);
+          }
+        });
+      }
+    },
+    [directionsRenderer]
+  );
 
   useEffect(() => {
     const initMap = async () => {
@@ -68,13 +63,13 @@ function App() {
           };
           setCurrentPosition(currentPosition);
 
-          const mapOptions = {
+          const mapOptions: google.maps.MapOptions = {
             center: currentPosition,
             zoom: 14,
             mapId: "pharma_plus",
           };
 
-          const icon = {
+          const icon: google.maps.Icon = {
             url: Pharmacy,
             scaledSize: new google.maps.Size(30, 30),
           };
@@ -97,20 +92,17 @@ function App() {
             };
           });
 
-          const directionsRendererInstance =
-            new google.maps.DirectionsRenderer();
+          const directionsRendererInstance = new google.maps.DirectionsRenderer();
           directionsRendererInstance.setMap(map);
           setDirectionsRenderer(directionsRendererInstance);
 
-          map.data.addListener("click", (event: any) => {
-            const clickedPharmacyName = event.feature.getProperty("name");
-            const clickedPharmacy: any = data.find(
-              (pharmacy: any) => pharmacy.name === clickedPharmacyName
-            );
-            setSelectedPharmacy(clickedPharmacy);
+          map.data.addListener("click", (event: google.maps.Data.MouseEvent) => {
+            const clickedPharmacyName = event.feature.getProperty("name") as string;
+            const clickedPharmacy = data.find((pharmacy) => pharmacy.name === clickedPharmacyName);
+            setSelectedPharmacy(clickedPharmacy || null);
             setPharma(clickedPharmacyName);
 
-            if (currentPosition) {
+            if (currentPosition && clickedPharmacy) {
               calculateAndDisplayRoute(currentPosition, {
                 lat: clickedPharmacy.lat,
                 lng: clickedPharmacy.lng,
@@ -125,14 +117,13 @@ function App() {
     };
 
     initMap();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [apiKey]);
 
   const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const selectedPharmacy = data.find(
-      (pharmacy) => pharmacy.name === e.target.value
-    );
+    const selectedPharmacy = data.find((pharmacy) => pharmacy.name === e.target.value);
     setPharma(e.target.value);
-    setSelectedPharmacy(selectedPharmacy);
+    setSelectedPharmacy(selectedPharmacy || null);
 
     if (selectedPharmacy && directionsRenderer && currentPosition) {
       calculateAndDisplayRoute(currentPosition, {
@@ -169,57 +160,13 @@ function App() {
         </div>
 
         {selectedPharmacy && selectedPharmacy.name === pharma ? (
-          <div className="hosp-container">
-            <div className="hosp-info">
-              <div>
-                <HospitalIcon color="#c94277" />
-              </div>
-              <div>
-                <p>{selectedPharmacy.name}</p>
-              </div>
-            </div>
-
-            <div className="hosp-info">
-              <div>
-                <MapPinIcon color="#c94277" />
-              </div>
-              <div>
-                <p>{selectedPharmacy.address}</p>
-              </div>
-            </div>
-
-            <div className="hosp-info">
-              <div>
-                <MailIcon color="#c94277" />
-              </div>
-              <div>
-                <p>{selectedPharmacy.email ? selectedPharmacy.email : "N/A"}</p>
-              </div>
-            </div>
-
-            <div className="hosp-info">
-              <div>
-                <LinkIcon color="#c94277" />
-              </div>
-              <div>
-                <p>
-                  {selectedPharmacy.website ? selectedPharmacy.website : "N/A"}
-                </p>
-              </div>
-            </div>
-
-            <div className="hosp-info">
-              <div>
-                <PhoneIcon color="#c94277" />
-              </div>
-              <div>
-                <p>{selectedPharmacy.Tel}</p>
-              </div>
-            </div>
-          </div>
+          <>
+            <PharmacyDetail selectedPharmacy={selectedPharmacy} />
+            <Services selectedPharmacy={selectedPharmacy}/>
+          </>
         ) : (
           <div className="map-pinned">
-            <MapPinnedIcon color="#c94277" size={100}/>
+            <MapPinnedIcon color="#c94277" size={100} />
           </div>
         )}
       </div>

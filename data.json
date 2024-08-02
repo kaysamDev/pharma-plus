@@ -17,7 +17,14 @@
         "city": "Accra",
         "country": "Ghana",
         "lng": -0.210239,
-        "lat": 5.558484
+        "lat": 5.558484,
+        "services": [
+          "In-store shopping", "In-store pick-up", "Delivery", "Prescription dispensing",
+          "Medication therapy management", "Health screenings", "Immunizations",
+          "Medication counseling", "Chronic disease management", "Home delivery services",
+          "Over-the-counter medication sales", "Wellness and preventive care programs",
+          "Health education", "Disease prevention", "Patient advocacy"
+        ]
       }
     },
     {
@@ -36,7 +43,14 @@
         "city": "Accra",
         "country": "Ghana",
         "lat": 5.555462207916911,
-        "lng": -0.2114550020944447
+        "lng": -0.2114550020944447,
+        "services": [
+          "In-store shopping", "In-store pick-up", "Delivery", "Prescription dispensing",
+          "Medication therapy management", "Health screenings", "Immunizations",
+          "Medication counseling", "Chronic disease management", "Home delivery services",
+          "Over-the-counter medication sales", "Wellness and preventive care programs",
+          "Health education", "Disease prevention", "Accessibility services"
+        ]
       }
     },
     {
@@ -55,7 +69,14 @@
         "city": "Accra",
         "country": "Ghana",
         "lat": 5.56584078557109,
-        "lng": -0.21491569197389226
+        "lng": -0.21491569197389226,
+        "services": [
+          "In-store shopping", "In-store pick-up", "Delivery", "Prescription dispensing",
+          "Medication therapy management", "Health screenings", "Immunizations",
+          "Medication counseling", "Chronic disease management", "Home delivery services",
+          "Over-the-counter medication sales", "Wellness and preventive care programs",
+          "Health education", "Emergency preparedness", "Patient advocacy"
+        ]
       }
     },
     {
@@ -74,7 +95,14 @@
         "city": "Accra",
         "country": "Ghana",
         "lat": 5.552492,
-        "lng": -0.206348
+        "lng": -0.206348,
+        "services": [
+          "In-store shopping", "In-store pick-up", "Delivery", "Prescription dispensing",
+          "Medication therapy management", "Health screenings", "Immunizations",
+          "Medication counseling", "Chronic disease management", "Home delivery services",
+          "Over-the-counter medication sales", "Wellness and preventive care programs",
+          "Health education", "Disease prevention", "Cosmetology"
+        ]
       }
     },
     {
@@ -93,7 +121,66 @@
         "city": "Accra",
         "country": "Ghana",
         "lat": 5.561904,
-        "lng": -0.213674
+        "lng": -0.213674,
+        "services": [
+          "In-store shopping", "In-store pick-up", "Delivery", "Prescription dispensing",
+          "Medication therapy management", "Health screenings", "Immunizations",
+          "Medication counseling", "Chronic disease management", "Home delivery services",
+          "Over-the-counter medication sales", "Wellness and preventive care programs",
+          "Health education", "Disease prevention", "Weight management"
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-0.203576920809643, 5.57301489127212]
+      },
+      "properties": {
+        "id": "05292",
+        "name": "AlphaDelta Pharmacy - Ring Road",
+        "address": "PALMAT Number 2 Block 8 Section, 013 Ring Road Central, Accra",
+        "email": "",
+        "website": "https://alphadeltapharmacy.com/",
+        "Tel": "0551400999",
+        "city": "Accra",
+        "country": "Ghana",
+        "lat": 5.57301489127212,
+        "lng": -0.203576920809643,
+        "services": [
+          "In-store shopping", "In-store pick-up", "Delivery", "Prescription dispensing",
+          "Medication therapy management", "Health screenings", "Immunizations",
+          "Medication counseling", "Chronic disease management", "Home delivery services",
+          "Over-the-counter medication sales", "Wellness and preventive care programs",
+          "Health education", "Disease prevention", "Basic diagnostic services"
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-0.205972222181217, 5.57192829734206]
+      },
+      "properties": {
+        "id": "052002",
+        "name": "Vicdoris Pharmaceutcals",
+        "address": "HQCV+MJF, Ring Road Central, Accra",
+        "email": "info@vicdorispharmaceuticals.com",
+        "website": "http://www.vicdorispharmaceuticals.com/",
+        "Tel": "0303976837",
+        "city": "Accra",
+        "country": "Ghana",
+        "lat": 5.57192829734206,
+        "lng": -0.205972222181217,
+        "services": [
+          "In-store shopping", "In-store pick-up", "Delivery", "Prescription dispensing",
+          "Medication therapy management", "Health screenings", "Immunizations",
+          "Medication counseling", "Chronic disease management", "Home delivery services",
+          "Over-the-counter medication sales", "Wellness and preventive care programs",
+          "Health education", "Disease prevention", "Accessibility services"
+        ]
       }
     }
   ]

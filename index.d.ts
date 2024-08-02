@@ -1,4 +1,4 @@
-export type selectedPharmacy = {
+export interface selectedPharmacy {
   id: string;
   name: string;
   address: string;
@@ -9,4 +9,5 @@ export type selectedPharmacy = {
   country: string;
   lat: number;
   lng: number;
+  services: string[]
 };
