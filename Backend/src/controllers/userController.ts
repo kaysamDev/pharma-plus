@@ -4,7 +4,7 @@ import User from "../models/User";
 // Create a new User account
 export const createUser = async(req:Request, res:Response) => {
     try {
-        const {name, email, password} = req.body;
+        const {name, email, password, role} = req.body;
         const newUser = new User({name, email, password, role: 'user'});
         const savedUser = await newUser.save();
         res.status(200).json(savedUser);
