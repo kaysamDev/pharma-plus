@@ -11,3 +11,11 @@ export interface selectedPharmacy {
   lng: number;
   services: string[]
 };
+
+export interface user {
+  name?: string;
+  email?: string;
+  password?: string;
+  role?: 'admin' | 'user';
+  token?: string;
+}
