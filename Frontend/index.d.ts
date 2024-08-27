@@ -9,7 +9,7 @@ export interface selectedPharmacy {
   country: string;
   lat: number;
   lng: number;
-  services: string[]
+  services: string[];
 }
 
 export interface user {
