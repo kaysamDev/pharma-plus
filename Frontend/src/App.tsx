@@ -20,7 +20,7 @@ function App() {
   const [currentPosition, setCurrentPosition] = useState<google.maps.LatLngLiteral | null>(null);
   const [distance, setDistance] = useState<string | null>(null);
   const [duration, setDuration] = useState<string | null>(null);
-  const [hideCard, setHideCard] = useState<Boolean>(false)
+  const [hideCard, setHideCard] = useState<boolean>(false)
 
   // Handle show and hide card
   const handleCardView = () => {

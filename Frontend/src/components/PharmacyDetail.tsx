@@ -2,7 +2,7 @@ import React from "react";
 import { HospitalIcon, LinkIcon, MailIcon, MapPinIcon, PhoneIcon } from "lucide-react";
 
 // ts
-import { selectedPharmacy } from "../..";;
+import { selectedPharmacy } from "../..";
 
 interface PharmacyDetailProps {
   selectedPharmacy: selectedPharmacy

@@ -10,7 +10,7 @@ export interface selectedPharmacy {
   lat: number;
   lng: number;
   services: string[]
-};
+}
 
 export interface user {
   name?: string;
