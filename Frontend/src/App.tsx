@@ -3,10 +3,11 @@ import { Loader } from "@googlemaps/js-api-loader";
 import { useEffect, useRef, useState, useCallback } from "react";
 import geoData from "../data.json";
 import Pharmacy from "../src/pharmacy_plus.png";
-import { MapPinnedIcon, MenuIcon, X } from "lucide-react";
+import { CircleUserIcon, MapPinnedIcon} from "lucide-react";
 import { selectedPharmacy } from ".././index";
 import PharmacyDetail from "./components/PharmacyDetail";
 import Services from "./components/Services";
+import ProfileModal from "./components/ProfileModal";
 
 interface GeoDataFeature {
   properties: selectedPharmacy;
@@ -20,11 +21,11 @@ function App() {
   const [currentPosition, setCurrentPosition] = useState<google.maps.LatLngLiteral | null>(null);
   const [distance, setDistance] = useState<string | null>(null);
   const [duration, setDuration] = useState<string | null>(null);
-  const [hideCard, setHideCard] = useState<boolean>(false)
+  const [showProfile, setShowProfile] = useState<boolean>(false)
 
   // Handle show and hide card
-  const handleCardView = () => {
-    setHideCard(!hideCard);
+  const handleProfileView = () => {
+    setShowProfile(!showProfile);
   }
 
   const data = geoData.features.map((item: GeoDataFeature) => item.properties);
@@ -169,10 +170,11 @@ function App() {
       ></div>
       <div className="card">
         <div className="prf">
-          <div className="profile-img-container" onClick={handleCardView}>
+          <div className="profile-img-container" onClick={handleProfileView}>
             {
-              !hideCard? <MenuIcon size={30}/> :
-            <X size={30}/>
+              !showProfile && <div>
+                <CircleUserIcon size="30px"/>
+              </div>
             }
           </div>
           <div>
@@ -206,6 +208,7 @@ function App() {
           </div>
         )}
       </div>
+      <ProfileModal show={showProfile} onClose={handleProfileView} />
     </>
   );
 }

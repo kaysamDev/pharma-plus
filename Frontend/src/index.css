@@ -123,6 +123,10 @@ button:focus-visible {
 
 }
 
+.error-message {
+  color: red;
+}
+
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;

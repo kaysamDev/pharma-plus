@@ -14,7 +14,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 2px;
+    gap: 4px;
 }
 
 .profile-img-container {
@@ -69,7 +69,7 @@ option {
         list-style: inside circle;
         padding: 6px;
     }
-    
+
     ul li:nth-child(even) {
         background-color: #ebe9e9;
     }
@@ -79,6 +79,83 @@ option {
     display: grid;
     place-items: center;
     margin-top: 10rem;
+}
+
+/* Modal styling */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 500px;
+    max-width: 90%;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.modal-body {
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: start;
+    gap: 16px;
+}
+
+.modal-img {
+    border-radius: 100%;
+    border: 2px solid #d2d2d2;
+    max-width: 90%;
+    width: 80px;
+    height: 80px;
+}
+
+.modal-footer {
+    float: right;
+    border: none;
+
+    &:hover {
+        border: none;
+    }
+
+    .logout {
+        background: none;
+        border: none;
+        color: red;
+
+        &:hover {
+            border: none;
+        }
+    }
+}
+
+.txt {
+    font-weight: 600;
+
+    span {
+        font-weight: 400;
+    }
 }
 
 
@@ -95,5 +172,9 @@ option {
 
     .map-pinned {
         display: none;
+    }
+
+    .modal-body {
+        justify-content: start;
     }
 }
