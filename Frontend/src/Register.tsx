@@ -43,9 +43,12 @@ const Register = () => {
         
         navigate(`/`);
       }
-    } catch (error: any) {
-      console.error("Error Creating Account", error.message);
-      setError(error.message || "An unexpected error occured");
+    } catch (err) {
+      if(err instanceof Error){
+        setError(err.message)
+      } else {
+        throw err;
+      }
     }
   };
 
