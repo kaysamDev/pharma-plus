@@ -1,30 +1,69 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
-// import user from "../index"
+import { Link, useNavigate } from "react-router-dom";
+import { saveToken } from "./util/tokenService";
 
 const Register = () => {
-  const [fullName, setFullName] = useState<string>("");
+  const [name, setName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const [error, setError] = useState<string>("");
 
-  //   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
-  //     e.preventDefault()
-  //   }
+  const navigate = useNavigate();
+
+  const handleRegister = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setError("");
+
+    const userData = {
+      name,
+      email,
+      password,
+    };
+
+    try {
+      const response = await fetch("http://localhost:5000/api/v1/users", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(userData),
+      });
+
+      if (!response.ok) {
+        const erroData = await response.json();
+        if (erroData.error) {
+          setError(erroData.error);
+        } else {
+          throw new Error("Something went wrong");
+        }
+      } else {
+        const data = await response.json();
+        console.log("Account created successfully", data);
+        saveToken(data.token);
+        
+        navigate(`/`);
+      }
+    } catch (error: any) {
+      console.error("Error Creating Account", error.message);
+      setError(error.message || "An unexpected error occured");
+    }
+  };
 
   return (
     <div className="acc-form">
-        <h1>Welcome To GeoPharmacy</h1>
+      <h1>Welcome To GeoPharmacy</h1>
       <div className="form-container">
         <h2>create account</h2>
         <div className="form">
-          <form>
+          <form onSubmit={handleRegister}>
             <div className="form-item">
               <label htmlFor="email">Fullname:</label>
               <input
                 type="text"
-                placeholder="Jonathan Quaynoo"
-                value={fullName}
-                onChange={(e) => setFullName(e.target.value)}
+                placeholder="Please enter fullname"
+                required
+                value={name}
+                onChange={(e) => setName(e.target.value)}
               />
             </div>
             <div className="form-item">
@@ -32,6 +71,7 @@ const Register = () => {
               <input
                 type="text"
                 placeholder="example@example.com"
+                required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
@@ -41,12 +81,14 @@ const Register = () => {
               <input
                 type="password"
                 placeholder="Password"
+                required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
             </div>
             <button type="submit">Create</button>
           </form>
+          {error && <p className="error-message">{error}</p>}
           <p>
             Already have an account? <Link to="/login">Login</Link>
           </p>
