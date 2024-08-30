@@ -49,7 +49,7 @@ const ProfileModal: React.FC<ProfileModalProps> = ({ show, onClose }) => {
               name: data.name,
               email: data.email,
               profilePicture:
-                data.profilePicture ||
+                data.profile_url ||
                 "https://example.com/default-profile-image.jpg",
             });
           } catch (error) {

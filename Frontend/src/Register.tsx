@@ -1,14 +1,20 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { saveToken } from "./util/tokenService";
+import { saveToken, getToken } from "./util/tokenService";
 
 const Register = () => {
   const [name, setName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<string>("");
-
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const token = getToken();
+    if (token) {
+      navigate("/", { replace: true });
+    }
+  });
 
   const handleRegister = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -40,12 +46,12 @@ const Register = () => {
         const data = await response.json();
         console.log("Account created successfully", data);
         saveToken(data.token);
-        
+
         navigate(`/`);
       }
     } catch (err) {
-      if(err instanceof Error){
-        setError(err.message)
+      if (err instanceof Error) {
+        setError(err.message);
       } else {
         throw err;
       }
