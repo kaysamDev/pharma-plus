@@ -18,7 +18,6 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
         {/* Protect routes that require authentication */}
         <Route element={<ProtectedRoute />}>
           <Route path="/" element={<App />} />
-          {/* Add more protected routes here */}
         </Route>
       </Routes>
     </BrowserRouter>
