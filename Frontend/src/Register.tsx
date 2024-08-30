@@ -14,7 +14,7 @@ const Register = () => {
     if (token) {
       navigate("/", { replace: true });
     }
-  });
+  },[navigate]);
 
   const handleRegister = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
