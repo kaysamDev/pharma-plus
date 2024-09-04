@@ -6,6 +6,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Login from "./Login.tsx";
 import Register from "./Register.tsx";
 import ProtectedRoute from "./components/ProtectedRoute.tsx";
+import Pharmacy from '../Admin/Dashboard.tsx'
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
@@ -18,6 +19,8 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
         {/* Protect routes that require authentication */}
         <Route element={<ProtectedRoute />}>
           <Route path="/" element={<App />} />
+          {/* Protected Admin route */}
+          <Route path="/admin/dashboard" element={<Pharmacy/>} />
         </Route>
       </Routes>
     </BrowserRouter>
