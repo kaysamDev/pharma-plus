@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import "../src/util/style/dashboard.css";
 import {
-  UserIcon,
+  UsersIcon,
   SettingsIcon,
   LogOutIcon,
   HospitalIcon,
@@ -40,7 +40,7 @@ const initialNavigations: Navigation[] = [
   },
   {
     title: "Users",
-    icon: <UserIcon />,
+    icon: <UsersIcon />,
     active: false,
   },
   {
