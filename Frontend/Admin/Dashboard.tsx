@@ -163,7 +163,7 @@ export default function Dashboard() {
               Home
             </button>
             <button onClick={handleLogout}>
-              <LogOutIcon />
+              <LogOutIcon size="16px"/>
             </button>
           </div>
         </div>
