@@ -1,11 +1,11 @@
 import { Link } from "react-router-dom";
 import "../src/util/style/dashboard.css";
 import {
-  UserIcon,
   SettingsIcon,
   LogOutIcon,
   HospitalIcon,
-  LayoutDashboardIcon
+  LayoutDashboardIcon,
+  UsersIcon
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { removeToken } from "../src/util/tokenService";
@@ -40,7 +40,7 @@ const initialNavigations: Navigation[] = [
   },
   {
     title: "Users",
-    icon: <UserIcon />,
+    icon: <UsersIcon />,
     active: false,
   },
   {
