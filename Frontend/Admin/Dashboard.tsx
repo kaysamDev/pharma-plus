@@ -5,16 +5,19 @@ import {
   SettingsIcon,
   LogOutIcon,
   HospitalIcon,
-  LayoutDashboardIcon
+  LayoutDashboardIcon,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { removeToken } from "../src/util/tokenService";
-import { useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import Memoji from "/memoji.png";
+import { User } from "..";
+import { Users } from "../src/components/Admin/Users";
+import { Pharmacies } from "../src/components/Admin/Pharmacies";
 
 type Navigation = {
   title: string;
-  icon: any;
+  icon: ReactNode;
   active?: boolean;
 };
 
@@ -70,6 +73,7 @@ const dashboard: Dashboard[] = [
 ];
 
 export default function Dashboard() {
+  const [users, setUsers] = useState<User[]>([]);
   const navigate = useNavigate();
   const [navigations, setNavigations] =
     useState<Navigation[]>(initialNavigations);
@@ -94,6 +98,7 @@ export default function Dashboard() {
           <div className="main-section">
             {dashboard.map((i: Dashboard) => (
               <div
+                key={i.title}
                 className="dashboardCard"
                 style={{
                   backgroundColor: `${i.theme.bg}`,
@@ -111,13 +116,31 @@ export default function Dashboard() {
       case "Pharmacies":
         return <Pharmacies />;
       case "Users":
-        return <Users />;
+        return <Users users={users} />;
       case "Settings":
         return <Settings />;
       default:
         return null;
     }
   };
+
+  // get user info
+  useEffect(() => {
+    const fetchUserInfo = async () => {
+      try {
+        const res = await fetch("http://localhost:5000/api/v1/users");
+        if (!res.ok) {
+          throw new Error("Failed to fetch user data");
+        }
+        const data = await res.json();
+        setUsers(data); // Set the fetched user data
+      } catch (error) {
+        console.error("Error fetching user info:", error);
+      }
+    };
+
+    fetchUserInfo();
+  }, [setUsers]);
 
   return (
     <div className="dashboard">
@@ -130,7 +153,7 @@ export default function Dashboard() {
 
           <div className="user-img">
             <div>
-            <img src={Memoji} alt="admin image" />
+              <img src={Memoji} alt="admin image" />
             </div>
             <p>Admin name</p>
           </div>
@@ -144,7 +167,7 @@ export default function Dashboard() {
                 style={{
                   backgroundColor: i.active ? "#e0e0e0" : "transparent",
                   color: i.active ? "#333" : "#000",
-                  fontWeight: i.active? "600": "400"
+                  fontWeight: i.active ? "600" : "400",
                 }}
               >
                 <div>{i.icon}</div>
@@ -163,7 +186,7 @@ export default function Dashboard() {
               Home
             </button>
             <button onClick={handleLogout}>
-              <LogOutIcon size="16px"/>
+              <LogOutIcon size="16px" />
             </button>
           </div>
         </div>
@@ -172,22 +195,6 @@ export default function Dashboard() {
     </div>
   );
 }
-
-export const Pharmacies = () => {
-  return (
-    <div>
-      <h1>Pharmacies</h1>
-    </div>
-  );
-};
-
-export const Users = () => {
-  return (
-    <div>
-      <h1>Users</h1>
-    </div>
-  );
-};
 
 export const Settings = () => {
   return (

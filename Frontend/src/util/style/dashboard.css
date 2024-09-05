@@ -25,7 +25,7 @@ main {
 }
 
 .top-nav {
-    padding: 2rem 0;
+    padding: 1rem 0;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -88,7 +88,7 @@ main {
     font-weight: 500;
     display: grid;
     place-content: center;
-    
+
     div {
         max-width: 80px;
         width: 100%;
@@ -120,10 +120,53 @@ main {
         font-size: 14px;
         font-weight: 400;
 
-        .nav-link{
+        .nav-link {
             background-color: rgba(201, 66, 119, 0.9);
             border: none;
         }
 
+    }
+}
+
+/* table */
+.user-table, .pharmacy-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.user-table th,
+.user-table td,
+.pharmacy-table th,
+.pharmacy-table td {
+    padding: 12px;
+    text-align: left;
+    border: 1px solid #ddd;
+}
+
+.pharmacy-table th,
+.user-table th {
+    background-color: #faf7f7;
+    font-weight: bold;
+}
+
+.user-table tr:hover,
+.pharmacy-table tr:hover {
+    background-color: #f5f5f5;
+}
+
+.pharmacy-table th,
+.user-table th {
+    color: #333;
+}
+
+td{
+    text-wrap: nowrap;
+    max-width: 50px;
+    overflow: hidden;
+    height: 10px;
+
+    .btn:nth-child(2) {
+        margin-inline: 14px;
     }
 }
