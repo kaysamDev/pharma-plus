@@ -12,9 +12,10 @@ export interface selectedPharmacy {
   services: string[];
 }
 
-export interface user {
-  name?: string;
-  email?: string;
+export interface User {
+  _id: number;
+  name: string;
+  email: string;
   password?: string;
   role?: 'admin' | 'user';
   token?: string;
