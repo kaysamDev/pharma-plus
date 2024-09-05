@@ -131,6 +131,7 @@ main {
 /* table */
 .user-table, .pharmacy-table {
     width: 100%;
+    overflow: hidden;
     border-collapse: collapse;
     margin-top: 20px;
 }
@@ -162,7 +163,7 @@ main {
 
 td{
     text-wrap: nowrap;
-    max-width: 50px;
+    max-width: 150px;
     overflow: hidden;
     height: 10px;
 

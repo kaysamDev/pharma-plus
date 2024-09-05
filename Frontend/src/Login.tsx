@@ -34,8 +34,29 @@ const Login = () => {
       }
 
       const data = await response.json();
-      saveToken(data.token);
-      navigate("/");
+      saveToken(data.token); // Save the token to localStorage or cookies
+
+      // Fetch user profile using the token to get the role
+      const profileResponse = await fetch("http://localhost:5000/api/v1/profile", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${getToken()}`, // Pass the token in Authorization header
+        },
+      });
+
+      if (!profileResponse.ok) {
+        throw new Error("Failed to fetch user profile");
+      }
+
+      const profileData = await profileResponse.json();
+
+      // Check the role and navigate accordingly
+      if (profileData.role === "admin") {
+        navigate("/admin/dashboard"); // Redirect to admin dashboard if role is admin
+      } else {
+        navigate("/"); // Otherwise, redirect to the home page
+      }
     } catch (err) {
       if (err instanceof Error) {
         setError(err.message);
