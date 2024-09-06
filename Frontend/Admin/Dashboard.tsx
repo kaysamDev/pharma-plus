@@ -15,10 +15,25 @@ import { User } from "..";
 import { Users } from "../src/components/Admin/Users";
 import { Pharmacies } from "../src/components/Admin/Pharmacies";
 
+
 type Navigation = {
   title: string;
   icon: ReactNode;
   active?: boolean;
+};
+
+export type Pharmacy = {
+  id: string;
+  name: string;
+  address: string;
+  email: string;
+  website: string;
+  Tel: string;
+  city: string;
+  country: string;
+  services: string[];
+  lat: number;
+  lng: number;
 };
 
 type Dashboard = {
@@ -53,27 +68,9 @@ const initialNavigations: Navigation[] = [
   },
 ];
 
-const dashboard: Dashboard[] = [
-  {
-    title: "Users",
-    figure: 30,
-    theme: {
-      bg: "#c94277",
-      color: "#F3EFF5",
-    },
-  },
-  {
-    title: "Pharmacies",
-    figure: 30,
-    theme: {
-      bg: "#F3EFF5",
-      color: "#242424",
-    },
-  },
-];
-
 export default function Dashboard() {
   const [users, setUsers] = useState<User[]>([]);
+  const [pharmacies, setPharmacies] = useState<Pharmacy[]>([]);
   const navigate = useNavigate();
   const [navigations, setNavigations] =
     useState<Navigation[]>(initialNavigations);
@@ -96,25 +93,30 @@ export default function Dashboard() {
       case "Dashboard":
         return (
           <div className="main-section">
-            {dashboard.map((i: Dashboard) => (
               <div
-                key={i.title}
                 className="dashboardCard"
                 style={{
-                  backgroundColor: `${i.theme.bg}`,
-                  color: `${i.theme.color}`,
+                  backgroundColor: "#c94277",
+                  color: "#F3EFF5",
                 }}
               >
-                <p>{i.title}</p>
-                <div className="figure">
-                  <h2>{i.figure}</h2>
-                </div>
+                <p>Users</p>
+                <div className="figure">{<h2>{users.length}</h2>}</div>
               </div>
-            ))}
+              <div
+                className="dashboardCard"
+                style={{
+                  backgroundColor: "#F3EFF5",
+                  color: "#242424",
+                }}
+              >
+                <p>Pharmacies</p>
+                <div className="figure">{<h2>{pharmacies.length}</h2>}</div>
+              </div>
           </div>
         );
       case "Pharmacies":
-        return <Pharmacies />;
+        return <Pharmacies pharmacies={pharmacies} setPharmacies={setPharmacies}/>;
       case "Users":
         return <Users users={users} />;
       case "Settings":

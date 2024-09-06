@@ -1,22 +1,8 @@
 import { useEffect, useState } from "react";
 import { EyeIcon, PenIcon, Trash } from "lucide-react";
+import { PharmacyForm } from "./PharmacyForm";
+import { selectedPharmacy as Pharmacy } from "../../..";
 
-// Define the Pharmacy type
-export type Pharmacy = {
-  id: string;
-  name: string;
-  address: string;
-  email: string;
-  website: string;
-  Tel: string;
-  city: string;
-  country: string;
-  services: string[];
-  lat: number;
-  lng: number;
-};
-
-// Define the GeoJSON structure
 type GeoJSONFeature = {
   type: "Feature";
   geometry: {
@@ -36,12 +22,28 @@ type GeoJSONFeature = {
   };
 };
 
-// Component
-export const Pharmacies = () => {
-  const [pharmacies, setPharmacies] = useState<Pharmacy[]>([]);
-  const [newPharmacy, setNewPharmacy] = useState<Partial<Pharmacy>>({});
+export const Pharmacies = ({
+  pharmacies,
+  setPharmacies,
+}: {
+  pharmacies: Pharmacy[];
+  setPharmacies: React.Dispatch<React.SetStateAction<Pharmacy[]>>;
+}) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedPharmacy, setSelectedPharmacy] =
+    useState<Partial<Pharmacy> | null>(null);
 
-  // Fetch Pharmacies
+  // Toggle modal
+  const openModal = (pharmacy: Partial<Pharmacy> | null = null) => {
+    setSelectedPharmacy(pharmacy);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setSelectedPharmacy(null);
+  };
+
   useEffect(() => {
     const fetchPharmacies = async () => {
       try {
@@ -73,10 +75,19 @@ export const Pharmacies = () => {
       }
     };
     fetchPharmacies();
-  }, []);
+  }, [setPharmacies]);
+
+  // Handle form submission (for both create and edit)
+  const handleFormSubmit = async (pharmacy: Partial<Pharmacy>) => {
+    if (pharmacy.id) {
+      await handleUpdate(pharmacy.id, pharmacy);
+    } else {
+      await handleCreate(pharmacy);
+    }
+  };
 
   // Create Pharmacy
-  const handleCreate = async () => {
+  const handleCreate = async (newPharmacy: Partial<Pharmacy>) => {
     try {
       const res = await fetch("http://localhost:5000/api/v1/pharmacy", {
         method: "POST",
@@ -92,19 +103,17 @@ export const Pharmacies = () => {
           },
         }),
       });
-      if (!res.ok) {
-        throw new Error("Failed to create pharmacy");
-      }
+      if (!res.ok) throw new Error("Failed to create pharmacy");
+
       const createdPharmacy: Pharmacy = await res.json();
-      setPharmacies((prev) => [...prev, createdPharmacy]);
-      setNewPharmacy({});
+      setPharmacies((prev: Pharmacy[]) => [...prev, createdPharmacy]);
     } catch (error) {
       console.error("Error creating pharmacy:", error);
     }
   };
 
   // Update Pharmacy
-  const handleUpdate = async (id: string) => {
+  const handleUpdate = async (id: string, updatedData: Partial<Pharmacy>) => {
     try {
       const res = await fetch(`http://localhost:5000/api/v1/pharmacy/${id}`, {
         method: "PUT",
@@ -113,18 +122,17 @@ export const Pharmacies = () => {
           type: "Feature",
           geometry: {
             type: "Point",
-            coordinates: [newPharmacy.lng, newPharmacy.lat],
+            coordinates: [updatedData.lng, updatedData.lat],
           },
           properties: {
-            ...newPharmacy,
+            ...updatedData,
           },
         }),
       });
-      if (!res.ok) {
-        throw new Error("Failed to update pharmacy");
-      }
+      if (!res.ok) throw new Error("Failed to update pharmacy");
+
       const updatedPharmacy: Pharmacy = await res.json();
-      setPharmacies((prev) =>
+      setPharmacies((prev: Pharmacy[]) =>
         prev.map((pharmacy) =>
           pharmacy.id === id ? updatedPharmacy : pharmacy
         )
@@ -134,7 +142,6 @@ export const Pharmacies = () => {
     }
   };
 
-  // Delete Pharmacy
   const handleDelete = async (id: string) => {
     try {
       const res = await fetch(`http://localhost:5000/api/v1/pharmacy/${id}`, {
@@ -143,7 +150,9 @@ export const Pharmacies = () => {
       if (!res.ok) {
         throw new Error("Failed to delete pharmacy");
       }
-      setPharmacies((prev) => prev.filter((pharmacy) => pharmacy.id !== id));
+      setPharmacies((prev: Pharmacy[]) =>
+        prev.filter((pharmacy: Pharmacy) => pharmacy.id !== id)
+      );
     } catch (error) {
       console.error("Error deleting pharmacy:", error);
     }
@@ -151,6 +160,9 @@ export const Pharmacies = () => {
 
   return (
     <div>
+      <button className="add-pharm" onClick={() => openModal()}>
+        Add Pharmacy
+      </button>
       <table className="pharmacy-table">
         <thead>
           <tr>
@@ -163,7 +175,7 @@ export const Pharmacies = () => {
           </tr>
         </thead>
         <tbody>
-          {pharmacies.map((pharmacy, index) => (
+          {pharmacies.map((pharmacy: Pharmacy, index: number) => (
             <tr key={index}>
               <td>{pharmacy.name}</td>
               <td>{pharmacy.address}</td>
@@ -174,7 +186,7 @@ export const Pharmacies = () => {
                 <EyeIcon size={24} className="btn" />
                 <PenIcon
                   size={24}
-                  onClick={() => handleUpdate(pharmacy.id)}
+                  onClick={() => openModal(pharmacy)}
                   className="btn"
                 />
                 <Trash
@@ -189,66 +201,13 @@ export const Pharmacies = () => {
         </tbody>
       </table>
 
-      <div>
-        <h2>Add New Pharmacy</h2>
-        <input
-          type="text"
-          placeholder="Name"
-          value={newPharmacy.name || ""}
-          onChange={(e) =>
-            setNewPharmacy({ ...newPharmacy, name: e.target.value })
-          }
+      {isModalOpen && (
+        <PharmacyForm
+          pharmacy={selectedPharmacy || {}}
+          onSubmit={handleFormSubmit}
+          onClose={closeModal}
         />
-        <input
-          type="text"
-          placeholder="Address"
-          value={newPharmacy.address || ""}
-          onChange={(e) =>
-            setNewPharmacy({ ...newPharmacy, address: e.target.value })
-          }
-        />
-        <input
-          type="text"
-          placeholder="Email"
-          value={newPharmacy.email || ""}
-          onChange={(e) =>
-            setNewPharmacy({ ...newPharmacy, email: e.target.value })
-          }
-        />
-        <input
-          type="text"
-          placeholder="Website"
-          value={newPharmacy.website || ""}
-          onChange={(e) =>
-            setNewPharmacy({ ...newPharmacy, website: e.target.value })
-          }
-        />
-        <input
-          type="text"
-          placeholder="Phone"
-          value={newPharmacy.Tel || ""}
-          onChange={(e) =>
-            setNewPharmacy({ ...newPharmacy, Tel: e.target.value })
-          }
-        />
-        <input
-          type="text"
-          placeholder="Latitude"
-          value={newPharmacy.lat || ""}
-          onChange={(e) =>
-            setNewPharmacy({ ...newPharmacy, lat: Number(e.target.value) })
-          }
-        />
-        <input
-          type="text"
-          placeholder="Longitude"
-          value={newPharmacy.lng || ""}
-          onChange={(e) =>
-            setNewPharmacy({ ...newPharmacy, lng: Number(e.target.value) })
-          }
-        />
-        <button onClick={handleCreate}>Create Pharmacy</button>
-      </div>
+      )}
     </div>
   );
 };
