@@ -210,7 +210,11 @@ td {
     margin-bottom: 20px;
     text-align: center;
 }
-
+.modal-detail{
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
 .close {
     position: absolute;
     top: 10px;
@@ -281,6 +285,10 @@ td {
     flex-direction: row-reverse;
     align-items: center;
     gap: 8px;
+}
+
+.btn {
+    cursor: pointer;
 }
 /* Animation */
 @keyframes slideDown {

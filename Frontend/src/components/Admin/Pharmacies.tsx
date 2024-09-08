@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { EyeIcon, PenIcon, Trash } from "lucide-react";
 import { PharmacyForm } from "./PharmacyForm";
+import {PharmacyDetail} from "../Admin/PharmacyDetail"
 import { selectedPharmacy as Pharmacy } from "../../..";
 
 type GeoJSONFeature = {
@@ -30,6 +31,7 @@ export const Pharmacies = ({
   setPharmacies: React.Dispatch<React.SetStateAction<Pharmacy[]>>;
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [singlePharmModal, setSinglePharmModal] = useState(false);
   const [selectedPharmacy, setSelectedPharmacy] =
     useState<Partial<Pharmacy> | null>(null);
 
@@ -42,6 +44,14 @@ export const Pharmacies = ({
   const closeModal = () => {
     setIsModalOpen(false);
     setSelectedPharmacy(null);
+    setSinglePharmModal(false)
+  };
+
+  const openDetailModal = (
+    pharmacy: Partial<Pharmacy> | null = null
+  ) => {
+    setSinglePharmModal(true);
+    setSelectedPharmacy(pharmacy);
   };
 
   useEffect(() => {
@@ -183,7 +193,7 @@ export const Pharmacies = ({
               <td>{pharmacy.website}</td>
               <td>{pharmacy.Tel}</td>
               <td>
-                <EyeIcon size={24} className="btn" />
+                <EyeIcon size={24} className="btn" onClick={()=> openDetailModal(pharmacy)}/>
                 <PenIcon
                   size={24}
                   onClick={() => openModal(pharmacy)}
@@ -205,6 +215,13 @@ export const Pharmacies = ({
         <PharmacyForm
           pharmacy={selectedPharmacy || {}}
           onSubmit={handleFormSubmit}
+          onClose={closeModal}
+        />
+      )}
+
+      {singlePharmModal && (
+        <PharmacyDetail
+          pharmacy={selectedPharmacy || {}}
           onClose={closeModal}
         />
       )}

@@ -148,9 +148,7 @@ export const PharmacyForm = ({
                   name="country"
                   placeholder="Enter Country Name"
                   value={formData.country || ""}
-                  onChange={(e) =>
-                    setFormData({ ...formData, lat: Number(e.target.value) })
-                  }
+                  onChange={handleChange}
                 />
               </div>
               <div className="form-group">
@@ -160,9 +158,7 @@ export const PharmacyForm = ({
                   name="city"
                   placeholder="Enter City"
                   value={formData.city || ""}
-                  onChange={(e) =>
-                    setFormData({ ...formData, lng: Number(e.target.value) })
-                  }
+                  onChange={handleChange}
                 />
               </div>
             </div>
@@ -170,12 +166,10 @@ export const PharmacyForm = ({
               <label>Mobile</label>
               <input
                 type="text"
-                name="tel"
-                placeholder="Enter City"
+                name="Tel"
+                placeholder="Enter Tel number"
                 value={formData.Tel || ""}
-                onChange={(e) =>
-                  setFormData({ ...formData, lng: Number(e.target.value) })
-                }
+                onChange={handleChange}
               />
             </div>
 
