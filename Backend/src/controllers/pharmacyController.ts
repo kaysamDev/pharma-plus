@@ -5,12 +5,14 @@ import PharmaciesModel from "../models/Pharmacies";
 export const createPharmacy = async (req: Request, res: Response) => {
   try {
     const newPharmacy = new PharmaciesModel(req.body);
-    const savedPharmacy = await newPharmacy.save();
-    res.status(201).json(savedPharmacy);
+    newPharmacy.id = newPharmacy._id.toString();
+    await newPharmacy.save();
+    res.status(201).json(newPharmacy);
   } catch (error) {
     res.status(500).json({ message: "Error creating pharmacy", error });
   }
 };
+
 
 // Get all pharmacies
 export const getPharmacies = async (req: Request, res: Response) => {
