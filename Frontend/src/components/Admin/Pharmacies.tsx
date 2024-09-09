@@ -1,27 +1,8 @@
 import { useEffect, useState } from "react";
 import { EyeIcon, PenIcon, Trash } from "lucide-react";
 import { PharmacyForm } from "./PharmacyForm";
-import {PharmacyDetail} from "../Admin/PharmacyDetail"
+import { PharmacyDetail } from "../Admin/PharmacyDetail";
 import { selectedPharmacy as Pharmacy } from "../../..";
-
-type GeoJSONFeature = {
-  type: "Feature";
-  geometry: {
-    type: "Point";
-    coordinates: [number, number]; // [longitude, latitude]
-  };
-  properties: {
-    id: string;
-    name: string;
-    address: string;
-    email?: string;
-    website?: string;
-    Tel: string;
-    city: string;
-    country: string;
-    services: string[];
-  };
-};
 
 export const Pharmacies = ({
   pharmacies,
@@ -44,12 +25,10 @@ export const Pharmacies = ({
   const closeModal = () => {
     setIsModalOpen(false);
     setSelectedPharmacy(null);
-    setSinglePharmModal(false)
+    setSinglePharmModal(false);
   };
 
-  const openDetailModal = (
-    pharmacy: Partial<Pharmacy> | null = null
-  ) => {
+  const openDetailModal = (pharmacy: Partial<Pharmacy> | null = null) => {
     setSinglePharmModal(true);
     setSelectedPharmacy(pharmacy);
   };
@@ -61,25 +40,9 @@ export const Pharmacies = ({
         if (!res.ok) {
           throw new Error("Failed to fetch pharmacies");
         }
-        const data: { features: GeoJSONFeature[] }[] = await res.json();
+        const data = await res.json();
 
-        const formattedPharmacies: Pharmacy[] = data.flatMap((item) =>
-          item.features.map((feature) => ({
-            id: feature.properties.id,
-            name: feature.properties.name,
-            address: feature.properties.address,
-            email: feature.properties.email || "N/A",
-            website: feature.properties.website || "N/A",
-            Tel: feature.properties.Tel,
-            city: feature.properties.city,
-            country: feature.properties.country,
-            services: feature.properties.services,
-            lat: feature.geometry.coordinates[1], // Latitude
-            lng: feature.geometry.coordinates[0], // Longitude
-          }))
-        );
-
-        setPharmacies(formattedPharmacies);
+        setPharmacies(data);
       } catch (error) {
         console.error("Error fetching pharmacies:", error);
       }
@@ -103,16 +66,20 @@ export const Pharmacies = ({
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          type: "Feature",
-          geometry: {
-            type: "Point",
-            coordinates: [newPharmacy.lng, newPharmacy.lat],
-          },
-          properties: {
-            ...newPharmacy,
-          },
+          // Send the pharmacy object directly
+          name: newPharmacy.name,
+          address: newPharmacy.address,
+          email: newPharmacy.email,
+          website: newPharmacy.website,
+          Tel: newPharmacy.Tel,
+          city: newPharmacy.city,
+          country: newPharmacy.country,
+          services: newPharmacy.services,
+          lat: newPharmacy.lat, // Assuming lat and lng are stored as separate properties now
+          lng: newPharmacy.lng,
         }),
       });
+
       if (!res.ok) throw new Error("Failed to create pharmacy");
 
       const createdPharmacy: Pharmacy = await res.json();
@@ -129,16 +96,19 @@ export const Pharmacies = ({
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          type: "Feature",
-          geometry: {
-            type: "Point",
-            coordinates: [updatedData.lng, updatedData.lat],
-          },
-          properties: {
-            ...updatedData,
-          },
+          name: updatedData.name,
+          address: updatedData.address,
+          email: updatedData.email,
+          website: updatedData.website,
+          Tel: updatedData.Tel,
+          city: updatedData.city,
+          country: updatedData.country,
+          services: updatedData.services,
+          lat: updatedData.lat,
+          lng: updatedData.lng,
         }),
       });
+
       if (!res.ok) throw new Error("Failed to update pharmacy");
 
       const updatedPharmacy: Pharmacy = await res.json();
@@ -157,9 +127,11 @@ export const Pharmacies = ({
       const res = await fetch(`http://localhost:5000/api/v1/pharmacy/${id}`, {
         method: "DELETE",
       });
+
       if (!res.ok) {
         throw new Error("Failed to delete pharmacy");
       }
+
       setPharmacies((prev: Pharmacy[]) =>
         prev.filter((pharmacy: Pharmacy) => pharmacy.id !== id)
       );
@@ -193,7 +165,11 @@ export const Pharmacies = ({
               <td>{pharmacy.website}</td>
               <td>{pharmacy.Tel}</td>
               <td>
-                <EyeIcon size={24} className="btn" onClick={()=> openDetailModal(pharmacy)}/>
+                <EyeIcon
+                  size={24}
+                  className="btn"
+                  onClick={() => openDetailModal(pharmacy)}
+                />
                 <PenIcon
                   size={24}
                   onClick={() => openModal(pharmacy)}
