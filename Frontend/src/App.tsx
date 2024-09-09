@@ -1,34 +1,61 @@
 import "./App.css";
 import { Loader } from "@googlemaps/js-api-loader";
 import { useEffect, useRef, useState, useCallback } from "react";
-import geoData from "../data.json";
 import Pharmacy from "../src/pharmacy_plus.png";
-import { CircleUserIcon, MapPinnedIcon} from "lucide-react";
-import { selectedPharmacy } from ".././index";
+import { CircleUserIcon, MapPinnedIcon } from "lucide-react";
 import PharmacyDetail from "./components/PharmacyDetail";
 import Services from "./components/Services";
 import ProfileModal from "./components/ProfileModal";
 
-interface GeoDataFeature {
-  properties: selectedPharmacy;
+interface PharmacyData {
+  id: string;
+  name: string;
+  address: string;
+  lat: number;
+  lng: number;
+  email?: string;
+  website?: string;
+  Tel: string;
+  city: string;
+  country: string;
+  services: string[];
 }
 
 function App() {
   const mapRef = useRef<HTMLDivElement>(null);
   const [pharma, setPharma] = useState<string>("SELECT PHARMACY");
-  const [selectedPharmacy, setSelectedPharmacy] = useState<selectedPharmacy | null>(null);
+  const [selectedPharmacy, setSelectedPharmacy] = useState<PharmacyData | null>(null);
   const [directionsRenderer, setDirectionsRenderer] = useState<google.maps.DirectionsRenderer | null>(null);
   const [currentPosition, setCurrentPosition] = useState<google.maps.LatLngLiteral | null>(null);
   const [distance, setDistance] = useState<string | null>(null);
   const [duration, setDuration] = useState<string | null>(null);
-  const [showProfile, setShowProfile] = useState<boolean>(false)
+  const [showProfile, setShowProfile] = useState<boolean>(false);
+  const [geoData, setGeoData] = useState<PharmacyData[]>([]);
 
-  // Handle show and hide card
+  // Toggle profile view
   const handleProfileView = () => {
     setShowProfile(!showProfile);
-  }
+  };
 
-  const data = geoData.features.map((item: GeoDataFeature) => item.properties);
+  // Fetch pharmacies
+  useEffect(() => {
+    const fetchPharmacies = async () => {
+      try {
+        const res = await fetch("http://localhost:5000/api/v1/pharmacy");
+
+        if (!res.ok) {
+          throw new Error("Failed to get Pharmacies");
+        }
+
+        const pharmacies = await res.json();
+        setGeoData(pharmacies);
+      } catch (error) {
+        console.error("Error fetching pharmacies:", error);
+      }
+    };
+
+    fetchPharmacies();
+  }, []);
 
   const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY as string;
 
@@ -41,7 +68,7 @@ function App() {
           destination: destination,
           travelMode: google.maps.TravelMode.DRIVING,
         };
- 
+
         directionsService.route(request, (result, status) => {
           if (status === google.maps.DirectionsStatus.OK && result) {
             directionsRenderer.setDirections(result);
@@ -114,8 +141,18 @@ function App() {
             title: "Current Location",
           });
 
-          map.data.addGeoJson(geoData, {
-            idPropertyName: "name",
+          // Add pharmacy data as GeoJSON to the map
+          geoData.forEach((pharmacy) => {
+            const pharmacyFeature = {
+              type: "Feature",
+              geometry: {
+                type: "Point",
+                coordinates: [pharmacy.lng, pharmacy.lat],
+              },
+              properties: pharmacy,
+            };
+
+            map.data.addGeoJson(pharmacyFeature);
           });
 
           map.data.setStyle(() => {
@@ -130,7 +167,7 @@ function App() {
 
           map.data.addListener("click", (event: google.maps.Data.MouseEvent) => {
             const clickedPharmacyName = event.feature.getProperty("name") as string;
-            const clickedPharmacy = data.find((pharmacy) => pharmacy.name === clickedPharmacyName);
+            const clickedPharmacy = geoData.find((pharmacy) => pharmacy.name === clickedPharmacyName);
             setSelectedPharmacy(clickedPharmacy || null);
             setPharma(clickedPharmacyName);
 
@@ -147,11 +184,13 @@ function App() {
       );
     };
 
-    initMap();
-  }, [apiKey]);
+    if (geoData.length > 0) {
+      initMap();
+    }
+  }, [apiKey, geoData]);
 
   const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const selectedPharmacy = data.find((pharmacy) => pharmacy.name === e.target.value);
+    const selectedPharmacy = geoData.find((pharmacy) => pharmacy.name === e.target.value);
     setPharma(e.target.value);
     setSelectedPharmacy(selectedPharmacy || null);
 
@@ -171,19 +210,19 @@ function App() {
       <div className="card">
         <div className="prf">
           <div className="profile-img-container" onClick={handleProfileView}>
-            {
-              !showProfile && <div>
-                <CircleUserIcon size="30px"/>
+            {!showProfile && (
+              <div>
+                <CircleUserIcon size="30px" />
               </div>
-            }
+            )}
           </div>
           <div>
             <form action="" method="get">
               <select value={pharma} onChange={handleSelectChange}>
                 <option value="">SELECT PHARMACY</option>
-                {data.map((i) => (
-                  <option value={i.name} key={i.id}>
-                    {i.name.toUpperCase()}
+                {geoData.map((pharmacy) => (
+                  <option value={pharmacy.name} key={pharmacy.id}>
+                    {pharmacy.name.toUpperCase()}
                   </option>
                 ))}
               </select>

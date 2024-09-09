@@ -1,8 +1,19 @@
 import React from "react";
-import { selectedPharmacy } from "../..";
-
+interface PharmacyData {
+  id: string;
+  name: string;
+  address: string;
+  lat: number;
+  lng: number;
+  email?: string;
+  website?: string;
+  Tel: string;
+  city: string;
+  country: string;
+  services: string[];
+}
 interface PharmacyDetailProps {
-  selectedPharmacy: selectedPharmacy;
+  selectedPharmacy: PharmacyData;
 }
 
 const Services:React.FC<PharmacyDetailProps> = ({ selectedPharmacy }) => {

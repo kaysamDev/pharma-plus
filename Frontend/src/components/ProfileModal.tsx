@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { CircleXIcon } from "lucide-react";
+import { CircleXIcon, ImageIcon } from "lucide-react";
 import { getToken, removeToken } from "../util/tokenService";
 import { useNavigate } from "react-router-dom";
 
@@ -78,12 +78,13 @@ const ProfileModal: React.FC<ProfileModalProps> = ({ show, onClose }) => {
         <div>
           {userProfile ? (
             <div className="modal-body">
-              <div className="modal-img">
-                <img src={userProfile.profilePicture} alt="User Profile" />
-              <div className="modal-img-overlay">
+              {/* <div className="modal-img"> */}
+                {/* <img src="/memoji.png" alt="User Profile" /> */}
+                <ImageIcon size={60}/>
+              {/* <div className="modal-img-overlay">
                 <p>Change Profile Picture</p>
-              </div>
-              </div>
+              </div> */}
+              {/* </div> */}
               <div>
                 <p className="txt">Name: <span>{ userProfile.name}</span></p>
                 <p className="txt">Email: <span>{ userProfile.email}</span></p>
