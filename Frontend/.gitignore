@@ -25,3 +25,5 @@ dist-ssr
 
 # .env file
 *.local
+.env
+.env.*.local
